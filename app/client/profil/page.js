@@ -19,22 +19,30 @@ export default function FormProfil() {
   
 
 const { user } = useAuth();
+
+
     async function fetchData() {
-     if (!user?.token || !user?.id) return;
-        const res = await fetch(`http://localhost:3001/profil/${user.id}`, {
- headers: {
+  if (!user?.token || !user?.id) return;
+
+  try {
+    const res = await fetch(`http://localhost:3001/profil/${user.id}`, {
+      headers: {
         Authorization: `Bearer ${user.token}`,
       },
-        });
+    });
 
-        const data = await res.json();
-        console.log("📥 Données récupérées :", data);
-        
-        const profil = data[0] || {};
-        setFirstName(profil.firstname || "");
-        setLastName(profil.lastname || "");
-        setLocation(profil.location || "");
+    if (!res.ok) {
+      throw new Error("Erreur lors de la récupération du profil");
     }
+
+    const data = await res.json(); // Aquí va después de `res`
+    setFirstName(data.firstname || "");
+    setLastName(data.lastname || "");
+    setLocation(data.location || "");
+  } catch (error) {
+    console.error("Erreur lors du chargement du profil :", error);
+  }
+}
 
 useEffect(() => {
   fetchData();
@@ -47,6 +55,7 @@ useEffect(() => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+           Authorization: `Bearer ${user.token}`,
         },
     body: JSON.stringify({
   firstname,
@@ -76,7 +85,7 @@ useEffect(() => {
           <div className="flex flex-col">
             <h2 className="text-4xl text-center font-bold">Votre Profil</h2>
 
-            <label className="text-xl">Prénom</label>
+            <label htmlFor="firstname" className="text-xl">Prénom</label>
             <input
               type="text"
               name="firstname"
@@ -84,7 +93,7 @@ useEffect(() => {
               onChange={(e) => setFirstName(e.target.value)}
             />
 
-            <label className="text-xl">Nom</label>
+            <label htmlFor="lastname"className="text-xl">Nom</label>
             <input
               type="text"
               name="lastname"
@@ -92,7 +101,7 @@ useEffect(() => {
               onChange={(e) => setLastName(e.target.value)}
             />
 
-            <label className="text-xl">Ville</label>
+            <label htmlFor="location" className="text-xl">Ville</label>
             <input
               type="text"
               name="location"
