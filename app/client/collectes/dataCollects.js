@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-export default function citiesGet() {
+export default function CitiesGet() {
     const [cities, setCities] = useState([]);
   async function fetchCities() {
       try {

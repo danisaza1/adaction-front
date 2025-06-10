@@ -15,7 +15,7 @@ import { CircleAlert, MapPin, Save, CheckCircle } from "lucide-react";
 import { Waste } from "../../components/waste";
 import NavBar from "app/components/navbar";
 import SimpleSelect from "app/components/simpleselect";
-import citiesGet from "./dataCollects.js";
+import CitiesGet from "./dataCollects.js";
 import { useAuth } from './../../context/authContext'; 
 import {Modal} from "../../components/modal";
 
@@ -26,7 +26,7 @@ export default function Collectes() {
 
   const [date, setDate] = useState(""); //Usestate pour garder des valeurs. Vide pour enregistrer les données du client. SetDate change la valeur.
   const [city, setCity] = useState("");
-  const cities = citiesGet();
+  const cities = CitiesGet();
   const [wasteData, setWaste] = useState([]);
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false); //visibilite
