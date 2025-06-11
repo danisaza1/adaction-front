@@ -72,7 +72,7 @@ export default function ProfilPage() {
               <ListOfVolunteers
                 volunteers={volunteers}
                 onDelete={handleDeleteVolunteer}
-                onEdit={(volunteer) => { // Wrapper for handleEditVolunteer to open modal
+                onEdit={(volunteer) => { 
                   handleEditVolunteer(volunteer);
                   setShowForm(true);
                 }}
@@ -84,8 +84,8 @@ export default function ProfilPage() {
       <Modal isOpen={showForm} onClose={handleCloseForm}>
         <Formulaire
           onClose={handleCloseForm}
-          onVolunteerAdded={fetchVolunteers} // Call fetchVolunteers from the hook
-          onVolunteerUpdated={fetchVolunteers} // Call fetchVolunteers from the hook
+          onVolunteerAdded={fetchVolunteers} 
+          onVolunteerUpdated={fetchVolunteers} 
           volunteerToEdit={editingVolunteer}
         />
       </Modal>

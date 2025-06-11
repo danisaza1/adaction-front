@@ -8,11 +8,13 @@ import { Gift } from "lucide-react";
 import DonationCard from "../../components/DonationCard";
 import NavBar from "app/components/navbar";
 import { useAuth } from '../../context/authContext';
+import React, { useState, useEffect } from 'react';
 
 
 export default function Dons() {
   // let dataDons = { asso_name, points, volunteer_id};
   const { user } = useAuth();
+  const [totalPoints, setTotalPoints] = useState(0);
  const fetchD = async (asso_name, points) => {
   if (!user?.id) {
     console.error("Utilisateur non identifié !");
@@ -36,7 +38,22 @@ export default function Dons() {
   console.log("Donation envoyée avec succès !", json);
   } 
   
-  
+  async function fetchTotalPoints() {
+  if (!user?.id) return;
+
+  try {
+    const res = await fetch(`http://localhost:3001/donations/points/${user.id}`);
+    if (!res.ok) throw new Error('Erreur lors du chargement des points');
+    const data = await res.json();
+    setTotalPoints(data.totalPoints);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+useEffect(() => {
+  fetchTotalPoints();
+}, [user]);
 
   // return data;
   
@@ -51,7 +68,7 @@ export default function Dons() {
         </CardTitle>
         <div className="flex justify-center color text-emerald-700">
           <Gift />
-          Points collectés :
+          Points collectés : {totalPoints}
         </div>
       </CardHeader>
 
